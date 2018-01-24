@@ -1,5 +1,4 @@
 # Compound Lift Tracker
-===
 
 This is a GUI used to track progress at the gym. It is pretty simple as it record the Max Weight for a particular workout, the reps of that particular set where the 'Max Weight' occurred as well as the date.
 
