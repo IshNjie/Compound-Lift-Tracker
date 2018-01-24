@@ -5,7 +5,6 @@ import datetime
 window = Tk()
 window.title("Compound Tracker") 
 window.geometry('800x600+0+0')
-#window.geometry("{0}x{1}+0+0".format(window.winfo_screenwidth(), window.winfo_screenheight())) ##Setting the size of window
 header = Label(window, text="Compound Tracker for Weightlifting", font=("arial",30,"bold"), fg="steelblue").pack()
 
 con = sq.connect('Gym.db') #dB browser for sqlite needed
@@ -66,7 +65,7 @@ def get():
         date = datetime.date(int(year.get()),int(month.get()), int(day.get())) #Date in format from 'import datetime'
 
         c.execute('INSERT INTO ' +comp.get()+ ' (Datestamp, MaxWeight, Reps) VALUES (?, ?, ?)',
-                  (date, weight.get(), reps.get()))
+                  (date, weight.get(), reps.get())) #Insert record into database.
         con.commit()
 
 #Reset fields after submit
@@ -88,7 +87,7 @@ def clear():
     reps.set('')
     
 def record():
-    c.execute('SELECT * FROM ' +compdb.get()) #Select from which ever compund lift is selected
+    c.execute('SELECT * FROM ' +compdb.get()) #Select from which ever compound lift is selected
 
     frame = Frame(window)
     frame.place(x= 400, y = 150)
@@ -96,7 +95,7 @@ def record():
     Lb = Listbox(frame, height = 8, width = 25,font=("arial", 12)) 
     Lb.pack(side = LEFT, fill = Y)
     
-    scroll = Scrollbar(frame, orient = VERTICAL)
+    scroll = Scrollbar(frame, orient = VERTICAL) # set scrollbar to list box for when entries exceed size of list box
     scroll.config(command = Lb.yview)
     scroll.pack(side = RIGHT, fill = Y)
     Lb.config(yscrollcommand = scroll.set) 
@@ -104,14 +103,14 @@ def record():
 
     Lb.insert(0, 'Date, Max Weight, Reps') #first row in listbox
     
-    data = c.fetchall()
+    data = c.fetchall() # Gets the data from the table
     
     for row in data:
-        Lb.insert(1,row)
-        
+        Lb.insert(1,row) # Inserts record row by row in list box
 
     L7 = Label(window, text = compdb.get()+ '      ', 
-               font=("arial", 16)).place(x=400,y=100)
+               font=("arial", 16)).place(x=400,y=100) # Title of list box, given which compound lift is chosen
+
     L8 = Label(window, text = "They are ordered from most recent", 
                font=("arial", 16)).place(x=400,y=350)
     con.commit()
